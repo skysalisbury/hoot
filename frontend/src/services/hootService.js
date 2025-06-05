@@ -17,3 +17,7 @@ export async function show(hootId) {
 export async function update(hootId) {
   return sendRequest(BASE_URL, 'PUT', hootId);
 }
+
+export async function deletedHoot(hootId) {
+  return sendRequest(BASE_URL, 'DELETE', hootId);
+}

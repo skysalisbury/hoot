@@ -20,6 +20,13 @@ router.get('/:hootId', hootsCtrl.show);
 //GET /api/hoots/:hootId (UPDATE action)
 router.put('/:hootId', hootsCtrl.update);
 
+//GET /api/hoots/:hootId (UPDATE action)
+router.delete('/:hootId', hootsCtrl.deleteHoot);
+
+// POST /api/hoots/:hootId/comments
+router.post('/:hootId/comments', hootsCtrl.create);
+
+
 module.exports = router;
 
 
