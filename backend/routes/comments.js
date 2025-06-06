@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router({ mergeParams: true }); // Add mergeParams: true to access parent params
+const router = express.Router({ mergeParams: true }); 
 const commentsCtrl = require("../controllers/comments");
 const ensureLoggedIn = require("../middleware/ensureLoggedIn");
 

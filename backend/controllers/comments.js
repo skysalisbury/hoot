@@ -7,7 +7,7 @@ module.exports = {
   deleteComment
 };
 
-async function create(req, res) {
+async function create(req, res) { console.log(req.params.hootId)
   try {
     req.body.author = req.user._id;
     const hoot = await Hoot.findById(req.params.hootId);
