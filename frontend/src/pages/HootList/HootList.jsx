@@ -9,7 +9,7 @@ const HootList = (props) => {
       <header>
        <h2>{hoot.title}</h2>
        <p>
-        {`${hoot.author.username} posted on ${new Date(hoot.createdAt).toLocaleDateString()}`}
+        {`${hoot.author} posted on ${new Date(hoot.createdAt).toLocaleDateString()}`}
        </p>
       </header>
       <p>{hoot.text}</p>

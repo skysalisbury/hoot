@@ -5,8 +5,8 @@ import HomePage from '../HomePage/HomePage';
 import SignUpPage from '../SignUpPage/SignUpPage';
 import LogInPage from '../LogInPage/LogInPage';
 import NavBar from '../../components/NavBar/NavBar';
-import HootList from '../../components/HootList/HootList';
-import HootDetails from '../../components/HootDetails/HootDetails';
+import HootList from '../HootList/HootList';
+import HootDetails from '../HootDetails/HootDetails';
 
 import * as hootService from '../../services/hootService';
 import './App.css';
@@ -34,7 +34,7 @@ export default function App() {
             <Route path="/api/hoots" element={<HootList hoots={hoots} />} />
             <Route
               path='/api/hoots/:hootId'
-              element={<HootDetails />}
+              element={<HootDetails hoots={hoots} />}
             />
             <Route path="*" element={null} />
           </Routes>

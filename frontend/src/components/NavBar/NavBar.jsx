@@ -21,7 +21,7 @@ export default function NavBar({ user, setUser }) {
             HOOTS
           </NavLink>
           &nbsp; | &nbsp;
-          <NavLink to="/hoots/new">New HOOT</NavLink>
+          <NavLink to="/api/hoots/new">New HOOT</NavLink>
           &nbsp; | &nbsp;
           <Link to="/" onClick={handleLogOut}>Log Out</Link>
           <span>Welcome, {user.name}</span>
