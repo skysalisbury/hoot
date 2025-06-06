@@ -17,11 +17,11 @@ export default function NavBar({ user, setUser }) {
       &nbsp; | &nbsp;
       {user ? (
         <>
-          <NavLink to="api/hoots" end>
+          <NavLink to="/hoots" end>
             HOOTS
           </NavLink>
           &nbsp; | &nbsp;
-          <NavLink to="/api/hoots/new">New HOOT</NavLink>
+          <NavLink to="/hoots/new">New HOOT</NavLink>
           &nbsp; | &nbsp;
           <Link to="/" onClick={handleLogOut}>Log Out</Link>
           <span>Welcome, {user.name}</span>

@@ -11,7 +11,7 @@ export async function create(hootData) {
 }
 
 export async function show(hootId) {
-  return sendRequest(BASE_URL, hootId);
+  return sendRequest(`${BASE_URL}/${hootId}`);
 }
 
 export async function update(hootId) {
@@ -20,4 +20,8 @@ export async function update(hootId) {
 
 export async function deletedHoot(hootId) {
   return sendRequest(BASE_URL, 'DELETE', hootId);
+}
+
+export async function createComment(hootId, commentFormData) {
+  return sendRequest(`${BASE_URL}/${hootId}/comments`, 'POST', commentFormData);
 }

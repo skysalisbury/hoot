@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect } from 'react';
-import { Routes, Route } from 'react-router';
+import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router';
 import { getUser } from '../../services/authService';
 import HomePage from '../HomePage/HomePage';
 import SignUpPage from '../SignUpPage/SignUpPage';
@@ -7,14 +7,14 @@ import LogInPage from '../LogInPage/LogInPage';
 import NavBar from '../../components/NavBar/NavBar';
 import HootList from '../HootList/HootList';
 import HootDetails from '../HootDetails/HootDetails';
-
+import NewHootPage from '../NewHootPage/NewHootPage';
 import * as hootService from '../../services/hootService';
 import './App.css';
-
 
 export default function App() {
   const [user, setUser] = useState(getUser());
   const [hoots, setHoots] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllHoots = async () => {
@@ -24,6 +24,16 @@ export default function App() {
     if (user) fetchAllHoots();
   }, [user]);
 
+  const handleAddHoot = async (hootFormData) => {
+    const newHoot = await hootService.create(hootFormData);
+    setHoots([newHoot, ...hoots]);
+    navigate('/hoots');
+  };
+
+  const handleDeleteHoot = async (hootId) => {
+    console.log('hootId', hootId);
+  };
+
   return (
     <main className="App">
       <NavBar user={user} setUser={setUser} />
@@ -31,10 +41,18 @@ export default function App() {
         {user ? (
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/api/hoots" element={<HootList hoots={hoots} />} />
+            <Route path="/hoots" element={<HootList hoots={hoots} />} />
             <Route
-              path='/api/hoots/:hootId'
+              path="/hoots/new"
+              element={<NewHootPage handleAddHoot={handleAddHoot} />}
+            />
+            <Route
+              path="/hoots/:hootId"
               element={<HootDetails hoots={hoots} />}
+            />
+            <Route 
+              path='/hoots/:hootId'
+              element={<HootDetails handleDeleteHoot={handleDeleteHoot}/>}
             />
             <Route path="*" element={null} />
           </Routes>
