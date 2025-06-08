@@ -25,3 +25,7 @@ export async function deletedHoot(hootId) {
 export async function createComment(hootId, commentFormData) {
   return sendRequest(`${BASE_URL}/${hootId}/comments`, 'POST', commentFormData);
 }
+
+export async function deleteComment(hootId, commentId) {
+  return sendRequest(`${BASE_URL}/${hootId}/comments/${commentId}`, 'DELETE');
+}

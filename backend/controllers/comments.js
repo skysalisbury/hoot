@@ -4,10 +4,11 @@ module.exports = {
   create,
   show,
   update,
-  deleteComment
+  deleteComment,
 };
 
-async function create(req, res) { console.log(req.params.hootId)
+async function create(req, res) {
+  console.log(req.params.hootId);
   try {
     req.body.author = req.user._id;
     const hoot = await Hoot.findById(req.params.hootId);
@@ -20,7 +21,7 @@ async function create(req, res) { console.log(req.params.hootId)
     const newComment = hoot.comments[hoot.comments.length - 1];
 
     // Populate the author for the entire comments array
-    await hoot.populate("comments.author");
+    await hoot.populate('comments.author');
 
     // Respond with the populated comment:
     res.status(201).json(newComment);
@@ -31,15 +32,17 @@ async function create(req, res) { console.log(req.params.hootId)
 
 async function show(req, res) {
   try {
-    const hoot = await Hoot.findById(req.params.hootId).populate("comments.author");
+    const hoot = await Hoot.findById(req.params.hootId).populate(
+      'comments.author'
+    );
     const comment = hoot.comments.id(req.params.commentId); // correct way to access subdoc
 
-    if (!comment) return res.status(404).json({ message: "Comment not found" });
+    if (!comment) return res.status(404).json({ message: 'Comment not found' });
 
     res.json(comment);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Failed to fetch comment" });
+    res.status(500).json({ message: 'Failed to fetch comment' });
   }
 }
 
@@ -48,7 +51,7 @@ async function update(req, res) {
     const hoot = await Hoot.findById(req.params.hootId);
     const comment = hoot.comments.id(req.params.commentId);
 
-    if (!comment) return res.status(404).json({ message: "Comment not found" });
+    if (!comment) return res.status(404).json({ message: 'Comment not found' });
 
     if (!comment.author.equals(req.user._id)) {
       return res.status(403).send("You're not allowed to update this comment");
@@ -60,27 +63,15 @@ async function update(req, res) {
     res.json(comment);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Failed to update comment" });
+    res.status(500).json({ message: 'Failed to update comment' });
   }
 }
 
 async function deleteComment(req, res) {
-  try {
-    const hoot = await Hoot.findById(req.params.hootId);
-    const comment = hoot.comments.id(req.params.commentId);
-
-    if (!comment) return res.status(404).json({ message: "Comment not found" });
-
-    if (!comment.author.equals(req.user._id)) {
-      return res.status(403).send("You're not allowed to delete this comment");
-    }
-
-    comment.remove(); // removes from subdocument array
-    await hoot.save();
-
-    res.json({ message: "Comment deleted" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ err: err.message });
-  }
+  const hoot = await Hoot.findById(req.params.hootId);
+  hoot.comments = hoot.comments.filter(
+    (comment) => comment._id.toString() !== req.params.commentId
+  );
+  await hoot.save();
+  res.sendStatus(204);
 }

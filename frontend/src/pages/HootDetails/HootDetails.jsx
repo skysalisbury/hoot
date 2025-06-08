@@ -7,10 +7,24 @@ export default function HootDetails(props) {
   const [hoot, setHoot] = useState(null);
   const params = useParams();
   const { hootId } = params;
+
   const handleAddComment = async (commentFormData) => {
     const newComment = await hootService.createComment(hootId, commentFormData);
     setHoot({ ...hoot, comments: [...hoot.comments, newComment] });
   };
+
+  const handleDeleteComment = async (commentId) => {
+  try {
+    await hootService.deleteComment(hootId, commentId);
+    setHoot({
+      ...hoot,
+      comments: hoot.comments.filter((comment) => comment._id !== commentId),
+    });
+  } catch (err) {
+    console.error('Error deleting comment:', err);
+  }
+};
+
 
   useEffect(() => {
     async function fetchHoot() {
@@ -32,19 +46,21 @@ export default function HootDetails(props) {
             {`${hoot.author.name} posted on
               ${new Date(hoot.createdAt).toLocaleDateString()}`}
           </p>
+        </header>
+        <p>{hoot.text}</p>
           {hoot.author._id === props.user._id && (
             <>
               <Link to={`/hoots/${hootId}/edit`}>Edit</Link>
 
-              <button onClick={() => props.handleDeleteHoot(hootId)}>Delete</button>
+              <button onClick={() => props.handleDeleteHoot(hootId)}>
+                Delete
+              </button>
             </>
           )}
-        </header>
-        <p>{hoot.text}</p>
       </section>
       <section>
         <h2>Comments</h2>
-        <CommentForm handleAddComment={handleAddComment} />
+        <CommentForm handleAddComment={handleAddComment} handleDeleteComment={handleDeleteComment} />
 
         {!hoot.comments.length && <p>There are no comments.</p>}
 
@@ -57,6 +73,15 @@ export default function HootDetails(props) {
               </p>
             </header>
             <p>{comment.text}</p>
+                {hoot.author._id === props.user._id && (
+                  <>
+                    <Link to={`/hoots/${hootId}/edit`}>Edit</Link>
+        
+                    <button onClick={() => handleDeleteComment(comment._id)}>
+                      Delete
+                    </button>
+                  </>
+                )}
           </article>
         ))}
       </section>
