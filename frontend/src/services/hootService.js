@@ -14,8 +14,8 @@ export async function show(hootId) {
   return sendRequest(`${BASE_URL}/${hootId}`);
 }
 
-export async function update(hootId) {
-  return sendRequest(BASE_URL, 'PUT', hootId);
+export async function update(hootId, hootFormData) {
+  return sendRequest(`${BASE_URL}/${hootId}`, 'PUT', hootFormData);
 }
 
 export async function deletedHoot(hootId) {

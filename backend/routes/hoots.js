@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const hootsCtrl = require('../controllers/hoots');
-const ensureLoggedIn = require('../middleware/ensureLoggedIn')
+const ensureLoggedIn = require('../middleware/ensureLoggedIn');
 
 // All paths start with '/api/hoots'
 
@@ -20,12 +20,9 @@ router.get('/:hootId', hootsCtrl.show);
 //GET /api/hoots/:hootId (UPDATE action)
 router.put('/:hootId', hootsCtrl.update);
 
-//GET /api/hoots/:hootId (UPDATE action)
+//GET /api/hoots/:hootId (DELETE action)
 router.delete('/:hootId', hootsCtrl.deleteHoot);
 
 module.exports = router;
-
-
-
 
 // All routes begin with '/api/hoots'

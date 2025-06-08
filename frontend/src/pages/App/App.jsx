@@ -11,6 +11,7 @@ import NewHootPage from '../NewHootPage/NewHootPage';
 import * as hootService from '../../services/hootService';
 import './App.css';
 
+
 export default function App() {
   const [user, setUser] = useState(getUser());
   const [hoots, setHoots] = useState([]);
@@ -32,8 +33,14 @@ export default function App() {
 
   const handleDeleteHoot = async (hootId) => {
     console.log('hootId', hootId);
-    setHoots(hoots.filter((hoot) => hoot._id !== hootId))
+    setHoots(hoots.filter((hoot) => hoot._id !== hootId));
     navigate('/hoots');
+  };
+
+  const handleUpdateHoot = async (hootId, hootFormData) => {
+    const updatedHoot = await hootService.update(hootId, hootFormData);
+    setHoots(hoots.map((hoot) => (hootId === hoot._id ? updatedHoot : hoot)));
+    navigate(`/hoots/${hootId}`);
   };
 
   return (
@@ -48,9 +55,25 @@ export default function App() {
               path="/hoots/new"
               element={<NewHootPage handleAddHoot={handleAddHoot} />}
             />
-            <Route 
-              path='/hoots/:hootId'
-              element={<HootDetails handleDeleteHoot={handleDeleteHoot} hoots={hoots} user={user}/>}
+            <Route
+              path="/hoots/:hootId"
+              element={
+                <HootDetails
+                  handleDeleteHoot={handleDeleteHoot}
+                  hoots={hoots}
+                  user={user}
+                />
+              }
+            />
+            <Route
+              path="/hoots/:hootId/edit"
+              element={
+                <NewHootPage
+                  handleUpdateHoot={handleUpdateHoot}
+                  hoots={hoots}
+                  user={user}
+                />
+              }
             />
             <Route path="*" element={null} />
           </Routes>
