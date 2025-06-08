@@ -32,6 +32,8 @@ export default function App() {
 
   const handleDeleteHoot = async (hootId) => {
     console.log('hootId', hootId);
+    setHoots(hoots.filter((hoot) => hoot._id !== hootId))
+    navigate('/hoots');
   };
 
   return (
@@ -46,13 +48,9 @@ export default function App() {
               path="/hoots/new"
               element={<NewHootPage handleAddHoot={handleAddHoot} />}
             />
-            <Route
-              path="/hoots/:hootId"
-              element={<HootDetails hoots={hoots} />}
-            />
             <Route 
               path='/hoots/:hootId'
-              element={<HootDetails handleDeleteHoot={handleDeleteHoot}/>}
+              element={<HootDetails handleDeleteHoot={handleDeleteHoot} hoots={hoots} user={user}/>}
             />
             <Route path="*" element={null} />
           </Routes>

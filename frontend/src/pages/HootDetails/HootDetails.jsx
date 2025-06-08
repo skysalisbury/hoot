@@ -3,69 +3,47 @@ import { useParams } from 'react-router';
 import CommentForm from '../../components/CommentForm/CommentForm';
 import * as hootService from '../../services/hootService';
 
-export default function HootDetails() {
-  console.log('HootDetailPage rendering');
+export default function HootDetails(props) {
   const [hoot, setHoot] = useState(null);
   const params = useParams();
   const { hootId } = params;
-
-
-
   const handleAddComment = async (commentFormData) => {
-      const newComment = await hootService.createComment(hootId, commentFormData);
-      setHoot({ ...hoot, comments: [...hoot.comments, newComment] });
-    };
+    const newComment = await hootService.createComment(hootId, commentFormData);
+    setHoot({ ...hoot, comments: [...hoot.comments, newComment] });
+  };
 
   useEffect(() => {
-    console.log('useEffect running with hootId:', hootId);
-    
     async function fetchHoot() {
-      console.log('fetchHoot function called');
-      try {
-        const hootData = await hootService.show(hootId);
-        setHoot(hootData);
-      } catch (error) {
-        console.error('Error fetching hoot:', error);
-      }
+      const hootData = await hootService.show(hootId);
+      setHoot(hootData);
     }
-    
     fetchHoot();
   }, [hootId]);
+  console.log('hoot state:', hoot);
 
-  console.log('Current hoot state:', hoot);
-  
-  if (!hoot) {
-    console.log('Rendering loading state');
-    return <div>Loading...</div>;
-  }
-
-  console.log('Rendering hoot details');
-
-
+  if (!hoot) return <main>Loading...</main>;
   return (
     <main>
       <section>
-          <header>
-            <p>{hoot.category.toUpperCase()}</p>
-            <h1>{hoot.title}</h1>
-            <p>
-              {`${hoot.author.username} posted on
+        <header>
+          <p>{hoot.category.toUpperCase()}</p>
+          <h1>{hoot.title}</h1>
+          <p>
+            {`${hoot.author.name} posted on
               ${new Date(hoot.createdAt).toLocaleDateString()}`}
-            </p>
-            {/* Add the following */}
-            {hoot.author._id === user._id && (
-              <>
-                <button>Delete</button>
-              </>
-            )}
-          </header>
-
+          </p>
+          {hoot.author._id === props.user._id && (
+            <>
+              <button onClick={() => props.handleDeleteHoot(hootId)}>Delete</button>
+            </>
+          )}
+        </header>
         <p>{hoot.text}</p>
       </section>
-    <section>
+      <section>
         <h2>Comments</h2>
         <CommentForm handleAddComment={handleAddComment} />
-           
+
         {!hoot.comments.length && <p>There are no comments.</p>}
 
         {hoot.comments.map((comment) => (
@@ -82,5 +60,4 @@ export default function HootDetails() {
       </section>
     </main>
   );
-
 }
