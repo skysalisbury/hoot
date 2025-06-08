@@ -75,7 +75,7 @@ export default function HootDetails(props) {
             <p>{comment.text}</p>
                 {hoot.author._id === props.user._id && (
                   <>
-                    <Link to={`/hoots/${hootId}/edit`}>Edit</Link>
+                    <Link to={`/hoots/${hootId}/comments/${comment._id}/edit`}>Edit</Link>
         
                     <button onClick={() => handleDeleteComment(comment._id)}>
                       Delete

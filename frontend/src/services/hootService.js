@@ -29,3 +29,11 @@ export async function createComment(hootId, commentFormData) {
 export async function deleteComment(hootId, commentId) {
   return sendRequest(`${BASE_URL}/${hootId}/comments/${commentId}`, 'DELETE');
 }
+
+export async function updateComment(hootId, commentId, commentFormData) {
+  return sendRequest(
+    `${BASE_URL}/${hootId}/comments/${commentId}`,
+    'PUT',
+    commentFormData
+  );
+}

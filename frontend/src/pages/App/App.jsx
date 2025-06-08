@@ -8,9 +8,9 @@ import NavBar from '../../components/NavBar/NavBar';
 import HootList from '../HootList/HootList';
 import HootDetails from '../HootDetails/HootDetails';
 import NewHootPage from '../NewHootPage/NewHootPage';
+import CommentForm from '../../components/CommentForm/CommentForm';
 import * as hootService from '../../services/hootService';
 import './App.css';
-
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -74,6 +74,11 @@ export default function App() {
                   user={user}
                 />
               }
+            />
+
+            <Route
+              path="/hoots/:hootId/comments/:commentId/edit"
+              element={<CommentForm />}
             />
             <Route path="*" element={null} />
           </Routes>
